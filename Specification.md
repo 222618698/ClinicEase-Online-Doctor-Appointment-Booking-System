@@ -132,4 +132,4 @@ This project is scoped for individual development over one semester and is feasi
 
 ---
 
-*Document prepared by: [Your Full Name] | [Your Student Number] | CPUT | March 2026*
+*Document prepared by: [Sithembiso] | [Mthembu] | CPUT | March 2026*
