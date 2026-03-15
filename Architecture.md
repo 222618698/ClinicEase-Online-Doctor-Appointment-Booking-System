@@ -200,6 +200,92 @@ classDiagram
 
 ---
 
+## End-to-End Data Flow Diagram
+
+> Shows how data moves through every layer of the system — from actors all the way to final outcomes.
+
+```mermaid
+flowchart TD
+    %% ACTORS
+    P(["Patient\nbooks · cancels · views"])
+    D(["Doctor\nviews schedule · updates status"])
+    R(["Receptionist\nmanages queue · reschedules"])
+
+    %% FRONTEND
+    FE["React Web App\nBooking portal · Doctor dashboard · Receptionist panel · Admin console"]
+
+    %% API SERVER
+    API["REST API Server — Node.js + Express\nAuth · Appointments · Doctors · Schedule · Notifications · Admin"]
+
+    %% INTERNAL MODULES
+    AUTH["Auth Module\nJWT · bcrypt"]
+    APPT["Appointment Module\nBook · Cancel · Reschedule"]
+    MED["Medication Module\nDose schedule · Refill alerts"]
+    SCHED["Scheduler\nCron job 8AM · Daily reminders"]
+    REC["Records Module\nPatient history · Test results"]
+
+    %% DATABASE
+    DB[("PostgreSQL Database\nUsers · Appointments · TimeSlots\nMedications · TestResults · Notifications")]
+
+    %% EXTERNAL SERVICES
+    EMAIL["Email Service\nSMTP · SendGrid\nConfirmations · Reminders"]
+    STORE["Cloud Storage\nAWS S3 / Cloudinary\nPatient files · Test reports"]
+    CAL["Calendar API\nGoogle / Outlook\nSync appointments"]
+
+    %% OUTCOMES
+    OUT1["Patient Notified\nAppointment confirmed\nMedication reminder\nBlood test due alert"]
+    OUT2["Paperless Records\nNo physical file needed\nHistory always available"]
+    OUT3["Calendar Synced\nArrive on time · No queue needed"]
+
+    %% CONNECTIONS
+    P --> FE
+    D --> FE
+    R --> FE
+
+    FE -->|HTTPS / JSON| API
+
+    API --> AUTH
+    API --> APPT
+    API --> MED
+    API --> SCHED
+    API --> REC
+
+    AUTH  --> DB
+    APPT  --> DB
+    MED   --> DB
+    SCHED --> DB
+    REC   --> DB
+
+    APPT  -->|triggers| EMAIL
+    SCHED -->|triggers| EMAIL
+    MED   -->|triggers| EMAIL
+    REC   --> STORE
+    APPT  --> CAL
+
+    EMAIL --> OUT1
+    STORE --> OUT2
+    CAL   --> OUT3
+
+    %% STYLES
+    classDef actor    fill:#E1F5EE,stroke:#0F6E56,color:#085041
+    classDef frontend fill:#E6F1FB,stroke:#185FA5,color:#0C447C
+    classDef api      fill:#EEEDFE,stroke:#534AB7,color:#3C3489
+    classDef module   fill:#F1EFE8,stroke:#5F5E5A,color:#444441
+    classDef db       fill:#D3D1C7,stroke:#5F5E5A,color:#2C2C2A
+    classDef ext      fill:#FAECE7,stroke:#993C1D,color:#712B13
+    classDef outcome  fill:#EAF3DE,stroke:#3B6D11,color:#27500A
+
+    class P,D,R actor
+    class FE frontend
+    class API api
+    class AUTH,APPT,MED,SCHED,REC module
+    class DB db
+    class EMAIL,STORE,CAL ext
+    class OUT1,OUT2,OUT3 outcome
+```
+
+---
+
 ## End-to-End Component Summary
 
 The table below maps every component from the user's browser all the way to the database and external services:
@@ -221,4 +307,4 @@ The table below maps every component from the user's browser all the way to the 
 
 ---
 
-*Document prepared by: [Your Full Name] | [Your Student Number] | CPUT | March 2026*
+*Document prepared by: [Sithembiso Lungisani Mthembu] | [222618698] | CPUT | March 2026*
