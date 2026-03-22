@@ -4,13 +4,13 @@
 
 **ClinicEase** is a web-based clinic appointment booking system designed to simplify how patients schedule, manage, and track their medical care — all from their phone or computer. The system connects patients with doctors at local clinics, allowing online booking, cancellations, and smart reminders, eliminating the need for long queues, paper folders, and phone-based scheduling.
 
-###  The Problem It Solves
+### 🌍 The Problem It Solves
 
 In many South African clinics, patients carry thick paper files, wait in long queues just to be seen, and often forget when to take their medication or when their next appointment is. ClinicEase replaces all of that with a smart, paperless digital system.
 
-###  What ClinicEase Will Do
+### ✅ What ClinicEase Will Do
 
-**  Online Appointment Booking**
+**📅 Online Appointment Booking**
 Patients who are feeling sick can book an appointment from home before even leaving the house — no more arriving at the clinic and waiting for hours just to get a slot. Book your time, arrive when it's your turn, and go home faster.
 
 **💊 Medication Reminders**
@@ -36,10 +36,18 @@ Doctors can view their full daily schedule digitally, update patient notes after
 
 ## 📂 Project Documents
 
+### Assignment 3 — System Specification & Architecture
 | Document | Description |
 |---|---|
-| [SPECIFICATION.md](./SPECIFICATION.md) | Full system specification including domain, problem statement, scope, and functional/non-functional requirements |
-| [ARCHITECTURE.md](./ARCHITECTURE.md) | C4 architectural diagrams covering Context, Container, Component, and Code levels |
+| [SPECIFICATION.md](./SPECIFICATION.md) | Full system specification including domain, problem statement, scope, and requirements |
+| [ARCHITECTURE.md](./ARCHITECTURE.md) | C4 architectural diagrams: Context, Container, Component, Code levels + Data Flow Diagram |
+
+### Assignment 4 — Stakeholder & System Requirements
+| Document | Description |
+|---|---|
+| [STAKEHOLDERS.md](./STAKEHOLDERS.md) | 7 stakeholders with detailed roles, concerns, pain points, and success metrics |
+| [SRD.md](./SRD.md) | System Requirements Document — 12 functional + 14 non-functional requirements with acceptance criteria |
+| [REFLECTION.md](./REFLECTION.md) | Challenges faced in balancing stakeholder needs during requirements elicitation |
 
 ---
 
@@ -56,8 +64,8 @@ Doctors can view their full daily schedule digitally, update patient notes after
 
 ## 👤 Author
 
-**Sithembiso Lungisani Mthembu**
-Student Number: 222618698
+**[Sithembiso]**
+Student Number: [222618698]
 Cape Peninsula University of Technology
 Module: Software Engineering – Assignment 3
-Date: March 2026    
+Date: March 2026
