@@ -49,6 +49,14 @@ Doctors can view their full daily schedule digitally, update patient notes after
 | [SRD.md](./SRD.md) | System Requirements Document — 12 functional + 14 non-functional requirements with acceptance criteria |
 | [REFLECTION.md](./REFLECTION.md) | Challenges faced in balancing stakeholder needs during requirements elicitation |
 
+### Assignment 5 — Use Case Modelling & Test Cases
+| Document | Description |
+|---|---|
+| [USE_CASE_DIAGRAM.md](./USE_CASE_DIAGRAM.md) | UML use case diagram (Mermaid) with 7 actors, 19 use cases, include relationships and written explanation |
+| [USE_CASE_SPECS.md](./USE_CASE_SPECS.md) | 8 detailed use case specifications with preconditions, postconditions, basic and alternative flows |
+| [TEST_CASES.md](./TEST_CASES.md) | 15 functional test cases + 3 non-functional test cases (performance, security, scalability) |
+| [REFLECTION_A5.md](./REFLECTION_A5.md) | Challenges in translating requirements into use cases and test cases |
+
 ---
 
 ## 🛠️ Tech Stack (Planned)
@@ -64,8 +72,8 @@ Doctors can view their full daily schedule digitally, update patient notes after
 
 ## 👤 Author
 
-**[Sithembiso]**
-Student Number: [222618698]
+**[sithembiso Lusangisani Mthembu]**
+Student Number: [222618698 ]
 Cape Peninsula University of Technology
 Module: Software Engineering – Assignment 3
 Date: March 2026
