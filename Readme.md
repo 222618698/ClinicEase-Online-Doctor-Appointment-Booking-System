@@ -57,6 +57,12 @@ Doctors can view their full daily schedule digitally, update patient notes after
 | [TEST_CASES.md](./TEST_CASES.md) | 15 functional test cases + 3 non-functional test cases (performance, security, scalability) |
 | [REFLECTION_A5.md](./REFLECTION_A5.md) | Challenges in translating requirements into use cases and test cases |
 
+### Assignment 6 — Agile Planning, Backlog & Sprint
+| Document | Description |
+|---|---|
+| [AGILE_PLANNING.md](./AGILE_PLANNING.md) | 18 user stories, MoSCoW backlog, Sprint 1 goal, task breakdown, and GitHub setup guide |
+| [REFLECTION_A6.md](./REFLECTION_A6.md) | Challenges in Agile prioritisation, estimation, and playing dual Scrum roles solo |
+
 ---
 
 ## 🛠️ Tech Stack (Planned)
@@ -72,8 +78,8 @@ Doctors can view their full daily schedule digitally, update patient notes after
 
 ## 👤 Author
 
-**[sithembiso Lusangisani Mthembu]**
-Student Number: [222618698 ]
+**[Sithembiso Lungisani Mthembu]**
+Student Number: [222618698]
 Cape Peninsula University of Technology
 Module: Software Engineering – Assignment 3
 Date: March 2026
