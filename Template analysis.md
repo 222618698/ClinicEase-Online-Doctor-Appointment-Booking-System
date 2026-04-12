@@ -67,4 +67,13 @@ After selecting Team Planning, the following customisations were made to adapt i
 
 ---
 
+
+## 📊 Kanban Board
+> See the live board on the [GitHub Projects tab](../../projects)
+
+![ClinicEase Kanban Board](./screenshort/template-comparing.png)
+
+ClinicEase uses a customised GitHub Project board based on the **Team Planning** template.
+
+
 *Document prepared by: [Sithembiso LUngisani Mthembu] | [222618698] | CPUT | March 2026*
