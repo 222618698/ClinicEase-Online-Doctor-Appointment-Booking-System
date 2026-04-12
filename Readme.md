@@ -63,6 +63,55 @@ Doctors can view their full daily schedule digitally, update patient notes after
 | [AGILE_PLANNING.md](./AGILE_PLANNING.md) | 18 user stories, MoSCoW backlog, Sprint 1 goal, task breakdown, and GitHub setup guide |
 | [REFLECTION_A6.md](./REFLECTION_A6.md) | Challenges in Agile prioritisation, estimation, and playing dual Scrum roles solo |
 
+### Assignment 7 — GitHub Kanban Board
+| Document | Description |
+|---|---|
+| [template_analysis.md](./template_analysis.md) | Comparison of 4 GitHub templates with justification for Team Planning selection |
+| [kanban_explanation.md](./kanban_explanation.md) | Kanban board definition, column structure, WIP limits, and Agile alignment |
+| [KANBAN_SETUP.md](./KANBAN_SETUP.md) | Step-by-step guide to setting up the GitHub Project board with custom columns and fields |
+| [reflection.md](./reflection.md) | Lessons learned in template selection and comparison with Trello and Jira |
+
+## 📊 Kanban Board
+> See the live board on the [GitHub Projects tab](../../projects)
+
+![ClinicEase Kanban Board](./docs/kanban-board-screenshot.png)
+
+ClinicEase uses a customised GitHub Project board based on the **Team Planning** template.
+
+### Custom Columns Added
+
+| Column | Reason Added |
+|---|---|
+| **Testing** | Ensures all features are validated against TEST_CASES.md before being marked Done. No feature moves to Done without passing its acceptance criteria test. |
+| **Blocked** | Makes task dependencies visible. When a task cannot proceed (e.g., waiting for an API endpoint before building the UI), it moves to Blocked rather than cluttering the In Progress column. |
+
+### WIP Limits
+
+| Column | WIP Limit |
+|---|---|
+| In Progress | 3 |
+| In Review | 3 |
+| Testing | 3 |
+| Blocked | 3 |
+
+### Labels Used
+
+| Label | Colour | Meaning |
+|---|---|---|
+| `must-have` | Red | Core MVP feature — Sprint 1 or 2 |
+| `should-have` | Orange | Important but not MVP-blocking |
+| `could-have` | Yellow | Nice to have — Sprint 4+ |
+| `user-story` | Blue | Functional feature story |
+| `non-functional` | Purple | Performance, security, or scalability story |
+| `sprint-1` | Green | Assigned to Sprint 1 |
+| `bug` | Dark Red | Defect discovered during testing |
+
+### Traceability
+
+Every card on the board links to a GitHub Issue (US-001 to US-018) which links to:
+- A functional or non-functional requirement in **SRD.md** (Assignment 4)
+- A use case in **USE_CASE_SPECS.md** (Assignment 5)
+- A sprint plan entry in **AGILE_PLANNING.md** (Assignment 6)
 ---
 
 ## 🛠️ Tech Stack (Planned)
