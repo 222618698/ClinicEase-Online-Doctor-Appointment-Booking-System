@@ -74,7 +74,7 @@ Doctors can view their full daily schedule digitally, update patient notes after
 ## 📊 Kanban Board
 > See the live board on the [GitHub Projects tab](../../projects)
 
-![ClinicEase Kanban Board](./docs/kanban-board-screenshot.png)
+![ClinicEase Kanban Board](./screenshort/kanban-board-screenshot.png)
 
 ClinicEase uses a customised GitHub Project board based on the **Team Planning** template.
 
