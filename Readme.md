@@ -71,48 +71,14 @@ Doctors can view their full daily schedule digitally, update patient notes after
 | [KANBAN_SETUP.md](./KANBAN_SETUP.md) | Step-by-step guide to setting up the GitHub Project board with custom columns and fields |
 | [reflection.md](./reflection.md) | Lessons learned in template selection and comparison with Trello and Jira |
 
-## 📊 Kanban Board
-> See the live board on the [GitHub Projects tab](../../projects)
-
-![ClinicEase Kanban Board](./screenshort/kanban-board-screenshot.png)
-
-ClinicEase uses a customised GitHub Project board based on the **Team Planning** template.
-
-### Custom Columns Added
-
-| Column | Reason Added |
+### Assignment 8 — State and Activity Modeling
+| Document | Description |
 |---|---|
-| **Testing** | Ensures all features are validated against TEST_CASES.md before being marked Done. No feature moves to Done without passing its acceptance criteria test. |
-| **Blocked** | Makes task dependencies visible. When a task cannot proceed (e.g., waiting for an API endpoint before building the UI), it moves to Blocked rather than cluttering the In Progress column. |
+| [STATE_DIAGRAMS.md](./STATE_DIAGRAMS.md) | 7 UML state transition diagrams (Appointment, User Account, Doctor Profile, Time Slot, Medication Reminder, Patient Record, Notification) |
+| [ACTIVITY_DIAGRAMS.md](./ACTIVITY_DIAGRAMS.md) | 8 UML activity diagrams with swimlanes (Registration, Booking, Cancellation, Reminder, Medication, Consultation, Walk-in, Admin Reports) |
+| [a8_reflection.md](./a8_reflection.md) | Lessons learned in state vs activity modeling, granularity, and Agile alignment |
 
-### WIP Limits
-
-| Column | WIP Limit |
-|---|---|
-| In Progress | 3 |
-| In Review | 3 |
-| Testing | 3 |
-| Blocked | 3 |
-
-### Labels Used
-
-| Label | Colour | Meaning |
-|---|---|---|
-| `must-have` | Red | Core MVP feature — Sprint 1 or 2 |
-| `should-have` | Orange | Important but not MVP-blocking |
-| `could-have` | Yellow | Nice to have — Sprint 4+ |
-| `user-story` | Blue | Functional feature story |
-| `non-functional` | Purple | Performance, security, or scalability story |
-| `sprint-1` | Green | Assigned to Sprint 1 |
-| `bug` | Dark Red | Defect discovered during testing |
-
-### Traceability
-
-Every card on the board links to a GitHub Issue (US-001 to US-018) which links to:
-- A functional or non-functional requirement in **SRD.md** (Assignment 4)
-- A use case in **USE_CASE_SPECS.md** (Assignment 5)
-- A sprint plan entry in **AGILE_PLANNING.md** (Assignment 6)
----
+## 📊 Kanban Board > See the live board on the [GitHub Projects tab](../../projects) ![ClinicEase Kanban Board](./screenshort/kanban-board-screenshot.png) ClinicEase uses a customised GitHub Project board based on the
 
 ## 🛠️ Tech Stack (Planned)
 
