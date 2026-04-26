@@ -78,6 +78,13 @@ Doctors can view their full daily schedule digitally, update patient notes after
 | [ACTIVITY_DIAGRAMS.md](./ACTIVITY_DIAGRAMS.md) | 8 UML activity diagrams with swimlanes (Registration, Booking, Cancellation, Reminder, Medication, Consultation, Walk-in, Admin Reports) |
 | [a8_reflection.md](./a8_reflection.md) | Lessons learned in state vs activity modeling, granularity, and Agile alignment |
 
+### Assignment 9 — Domain Model and Class Diagram
+| Document | Description |
+|---|---|
+| [DOMAIN_MODEL.md](./DOMAIN_MODEL.md) | 8 domain entities with attributes, methods, relationships, and business rules |
+| [CLASS_DIAGRAM.md](./CLASS_DIAGRAM.md) | Full Mermaid.js class diagram with 11 classes, inheritance, composition, aggregation, and multiplicity |
+| [a9_reflection.md](./a9_reflection.md) | Reflection on OOP design decisions, trade-offs, and alignment with prior assignments |
+
 ## 📊 Kanban Board > See the live board on the [GitHub Projects tab](../../projects) ![ClinicEase Kanban Board](./screenshort/kanban-board-screenshot.png) ClinicEase uses a customised GitHub Project board based on the
 
 ## 🛠️ Tech Stack (Planned)
