@@ -85,6 +85,39 @@ Doctors can view their full daily schedule digitally, update patient notes after
 | [CLASS_DIAGRAM.md](./CLASS_DIAGRAM.md) | Full Mermaid.js class diagram with 11 classes, inheritance, composition, aggregation, and multiplicity |
 | [a9_reflection.md](./a9_reflection.md) | Reflection on OOP design decisions, trade-offs, and alignment with prior assignments |
 
+### Assignment 10 — Code Implementation and Creational Patterns
+| Document/Directory | Description |
+|---|---|
+| [src/](./src/) | Core class implementations: `user.py`, `users.py`, `models.py` |
+| [creational_patterns/](./creational_patterns/) | All 6 creational patterns in `patterns.py` |
+| [tests/](./tests/) | 69 unit tests in `test_all.py` — all passing, 88% coverage |
+| [CHANGELOG.md](./CHANGELOG.md) | Full project changelog across all assignments |
+
+## 🧪 Running the Tests
+
+```bash
+# Install dependencies
+pip install bcrypt pytest pytest-cov
+
+# Run all tests
+pytest tests/ -v
+
+# Run with coverage report
+pytest tests/ --cov=src --cov=creational_patterns --cov-report=term-missing
+```
+
+## 🏗️ Creational Patterns Used
+
+| Pattern | Class | Use Case |
+|---|---|---|
+| Simple Factory | `UserFactory` | Creates Patient/Doctor/Receptionist/Admin by role string |
+| Factory Method | `NotificationCreator` + subclasses | Creates correct notification type with right message |
+| Abstract Factory | `StandardSchedulingFactory` / `UrgentSchedulingFactory` | Creates matching slot + appointment families |
+| Builder | `MedicalRecordBuilder` | Builds complex records step by step |
+| Prototype | `MedicationReminderPrototype` | Clones pre-configured medication templates |
+| Singleton | `DatabaseConnection` | One thread-safe DB connection across the app |
+
+
 ## 📊 Kanban Board > See the live board on the [GitHub Projects tab](../../projects) ![ClinicEase Kanban Board](./screenshort/kanban-board-screenshot.png) ClinicEase uses a customised GitHub Project board based on the
 
 ## 🛠️ Tech Stack (Planned)
