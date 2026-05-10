@@ -34,6 +34,47 @@ Doctors can view their full daily schedule digitally, update patient notes after
 
 ---
 
+## 📁 Project Structure
+
+```
+ClinicEase-Online-Doctor-Appointment-Booking-System/
+│
+├── src/                                  # Core domain classes
+│   ├── __init__.py
+│   ├── user.py                           # Base User class
+│   ├── users.py                          # Patient, Doctor, Receptionist, Administrator
+│   └── models.py                         # Appointment, TimeSlot, Notification, MedicalRecord, MedicationReminder
+│
+├── creational_patterns/                  # All 6 creational design patterns
+│   ├── __init__.py
+│   └── patterns.py                       # Simple Factory, Factory Method, Abstract Factory, Builder, Prototype, Singleton
+│
+├── repositories/                         # Repository layer (Assignment 11)
+│   ├── __init__.py
+│   ├── interfaces.py                     # Generic + entity-specific repository interfaces
+│   ├── inmemory/
+│   │   ├── __init__.py
+│   │   └── implementations.py            # In-memory HashMap CRUD implementations
+│   ├── filesystem/
+│   │   ├── __init__.py
+│   │   └── implementations.py            # JSON filesystem stubs (future)
+│   └── database/
+│       ├── __init__.py
+│       └── implementations.py            # PostgreSQL stubs (future)
+│
+├── factories/                            # Storage abstraction
+│   ├── __init__.py
+│   └── repository_factory.py             # RepositoryFactory — switches between MEMORY/FILESYSTEM/DATABASE
+│
+├── tests/                                # All unit tests
+│   ├── __init__.py
+│   ├── test_all.py                       # 69 tests — creational patterns + core classes
+│   └── test_repositories.py              # 47 tests — repository CRUD + factory
+│
+└── setup.cfg                             # pytest configuration
+```
+
+---
 ## 📂 Project Documents
 
 ### Assignment 3 — System Specification & Architecture
@@ -93,17 +134,41 @@ Doctors can view their full daily schedule digitally, update patient notes after
 | [tests/](./tests/) | 69 unit tests in `test_all.py` — all passing, 88% coverage |
 | [CHANGELOG.md](./CHANGELOG.md) | Full project changelog across all assignments |
 
+---
+
+## 🗄️ Repository Layer (Assignment 11)
+
+The repository layer abstracts all storage details behind interfaces, allowing the storage backend to be swapped without changing any business logic.
+
+| Layer | Pattern Used | Purpose |
+|---|---|---|
+| `interfaces.py` | Generic interface `Repository<T,ID>` | Defines CRUD contract for all entities |
+| `inmemory/` | HashMap / Python dict | Fast in-memory storage for development and testing |
+| `filesystem/` | JSON file serialisation | Future: persist data to disk between sessions |
+| `database/` | PostgreSQL via psycopg2 | Future: production-grade persistent storage |
+| `repository_factory.py` | Factory Pattern | Switch backends via `RepositoryFactory.get_patient_repository("MEMORY")` |
+
+**Justification:** The Factory Pattern was chosen over Dependency Injection because it provides a single centralised switching point. Adding a new backend (e.g. MongoDB) requires only adding one new case in the factory — zero changes to services, controllers, or tests.
+
+---
+
 ## 🧪 Running the Tests
 
 ```bash
 # Install dependencies
 pip install bcrypt pytest pytest-cov
 
-# Run all tests
-pytest tests/ -v
+# Run ALL tests (116 total)
+python -m pytest tests/ -v
 
-# Run with coverage report
-pytest tests/ --cov=src --cov=creational_patterns --cov-report=term-missing
+# Run with full coverage report
+python -m pytest tests/ --cov=src --cov=creational_patterns --cov=repositories --cov=factories --cov-report=term-missing
+
+# Run only repository tests
+python -m pytest tests/test_repositories.py -v
+
+# Run only creational pattern tests
+python -m pytest tests/test_all.py -v
 ```
 
 ## 🏗️ Creational Patterns Used
