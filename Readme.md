@@ -152,6 +152,89 @@ The repository layer abstracts all storage details behind interfaces, allowing t
 
 ---
 
+### Assignment 12 — Service Layer and REST API
+| Document/Directory | Description |
+|---|---|
+| [services/patient_service.py](./services/patient_service.py) | PatientService — register, get, update, delete with business rule validation |
+| [services/doctor_service.py](./services/doctor_service.py) | DoctorService — create, search by specialisation, set available/unavailable |
+| [services/appointment_service.py](./services/appointment_service.py) | AppointmentService — book, cancel, reschedule, complete with double-booking prevention |
+| [api/main.py](./api/main.py) | FastAPI REST API — 20 endpoints for Patients, Doctors, and Appointments with Swagger UI |
+| [tests/test_services.py](./tests/test_services.py) | 40 service layer unit tests — all passing |
+| [tests/test_api.py](./tests/test_api.py) | 32 API integration tests — all passing |
+| [conftest.py](./conftest.py) | pytest path configuration for all test modules |
+
+---
+
+## 🚀 Running the REST API
+
+```bash
+# Install dependencies
+pip install fastapi uvicorn httpx
+
+# Start the API server
+uvicorn api.main:app --reload
+```
+
+Then open **http://localhost:8000/docs** in your browser for the interactive Swagger UI.
+
+### 📋 Available Endpoints
+
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/api/patients` | Get all patients |
+| POST | `/api/patients` | Register a new patient |
+| GET | `/api/patients/{id}` | Get patient by ID |
+| PUT | `/api/patients/{id}` | Update patient details |
+| DELETE | `/api/patients/{id}` | Delete a patient |
+| GET | `/api/doctors` | Get all doctors |
+| POST | `/api/doctors` | Create a doctor profile |
+| GET | `/api/doctors/available` | Get available doctors only |
+| GET | `/api/doctors/search?specialisation=GP` | Search by specialisation |
+| GET | `/api/doctors/{id}` | Get doctor by ID |
+| PUT | `/api/doctors/{id}` | Update doctor profile |
+| PATCH | `/api/doctors/{id}/unavailable` | Set doctor unavailable |
+| PATCH | `/api/doctors/{id}/available` | Set doctor available |
+| DELETE | `/api/doctors/{id}` | Delete doctor profile |
+| POST | `/api/slots` | Create a time slot for a doctor |
+| GET | `/api/doctors/{id}/slots` | Get available slots for a doctor |
+| GET | `/api/appointments` | Get all appointments |
+| POST | `/api/appointments` | Book an appointment |
+| GET | `/api/appointments/{id}` | Get appointment by ID |
+| PATCH | `/api/appointments/{id}/cancel` | Cancel an appointment |
+| PATCH | `/api/appointments/{id}/reschedule` | Reschedule an appointment |
+| PATCH | `/api/appointments/{id}/complete` | Complete an appointment |
+
+---
+
+## 🧪 Running ALL Tests
+
+```bash
+# Install all dependencies
+pip install bcrypt pytest pytest-cov fastapi uvicorn httpx
+
+# Run ALL tests (188 total)
+python -m pytest tests/ -v
+
+# Run by assignment
+python -m pytest tests/test_all.py -v                  # Assignment 10 — 69 tests
+python -m pytest tests/test_repositories.py -v         # Assignment 11 — 47 tests
+python -m pytest tests/test_services.py -v             # Assignment 12 — 40 tests
+python -m pytest tests/test_api.py -v                  # Assignment 12 — 32 tests
+
+# Run with full coverage
+python -m pytest tests/ --cov=src --cov=creational_patterns --cov=repositories --cov=factories --cov=services --cov=api --cov-report=term-missing
+```
+
+### ✅ Full Test Results
+
+| Test File | Tests | Assignment | Status |
+|---|---|---|---|
+| `tests/test_all.py` | 69 | Assignment 10 — Creational Patterns | ✅ All passing |
+| `tests/test_repositories.py` | 47 | Assignment 11 — Repository Layer | ✅ All passing |
+| `tests/test_services.py` | 40 | Assignment 12 — Service Layer | ✅ All passing |
+| `tests/test_api.py` | 32 | Assignment 12 — REST API | ✅ All passing |
+| **Total** | **188** | | **✅ 188 passing** |
+
 ## 🧪 Running the Tests
 
 ```bash
