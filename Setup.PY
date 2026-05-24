@@ -1,9 +1,10 @@
 """
-setup.py — ClinicEase package configuration
-Used by the CI/CD pipeline to build a Python wheel artifact.
+setup.py - ClinicEase package configuration
+Used for editable installs in local development and CI.
 """
 from pathlib import Path
-from setuptools import setup, find_packages
+
+from setuptools import find_packages, setup
 
 ROOT = Path(__file__).parent
 
@@ -24,7 +25,7 @@ setup(
     description="ClinicEase Online Doctor Appointment Booking System",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    author="[Your Full Name]",
+    author="ClinicEase Team",
     python_requires=">=3.12",
     packages=find_packages(exclude=["tests*", "screenshort*", "docs*"]),
     install_requires=[
@@ -32,6 +33,9 @@ setup(
         "uvicorn>=0.23.0",
         "bcrypt>=4.0.0",
         "httpx>=0.24.0",
+        "pydantic>=2.0.0",
+        "starlette>=0.27.0",
+        "anyio>=4.0.0",
     ],
     extras_require={
         "dev": [
