@@ -81,7 +81,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install bcrypt fastapi uvicorn httpx pydantic starlette anyio
+          pip install bcrypt pytest pytest-cov fastapi uvicorn httpx pydantic starlette anyio
 
       - name: Verify all modules import correctly
         run: |
