@@ -30,27 +30,52 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: Install dependencies
+      - name: Install all dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install bcrypt pytest pytest-cov fastapi uvicorn httpx
+          pip install \
+            bcrypt \
+            pytest \
+            pytest-cov \
+            fastapi \
+            uvicorn \
+            httpx \
+            pydantic \
+            pydantic[email] \
+            starlette \
+            anyio
 
-      - name: Run Assignment 10 tests (Creational Patterns)
+      - name: Debug — show Python path and installed packages
         env:
           PYTHONPATH: ${{ github.workspace }}
-        run: python -m pytest tests/test_all.py -v --tb=short
+        run: |
+          echo "=== Workspace ===" 
+          ls -la
+          echo "=== Tests folder ==="
+          ls -la tests/
+          echo "=== src folder ==="
+          ls -la src/
+          echo "=== services folder ==="
+          ls -la services/
+          echo "=== Installed packages ==="
+          pip list
 
-      - name: Run Assignment 11 tests (Repository Layer)
+      - name: Run Assignment 10 tests
         env:
           PYTHONPATH: ${{ github.workspace }}
-        run: python -m pytest tests/test_repositories.py -v --tb=short
+        run: python -m pytest tests/test_all.py -v --tb=long
 
-      - name: Run Assignment 12 tests (Service Layer and API)
+      - name: Run Assignment 11 tests
         env:
           PYTHONPATH: ${{ github.workspace }}
-        run: python -m pytest tests/test_services.py tests/test_api.py -v --tb=short
+        run: python -m pytest tests/test_repositories.py -v --tb=long
 
-      - name: Run full test suite with coverage
+      - name: Run Assignment 12 tests
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: python -m pytest tests/test_services.py tests/test_api.py -v --tb=long
+
+      - name: Run full suite with coverage
         env:
           PYTHONPATH: ${{ github.workspace }}
         run: |
@@ -63,13 +88,6 @@ jobs:
             --cov=api \
             --cov-report=term-missing \
             --tb=short
-
-      - name: Write test summary
-        env:
-          PYTHONPATH: ${{ github.workspace }}
-        run: |
-          echo "## ✅ Test Results" >> $GITHUB_STEP_SUMMARY
-          python -m pytest tests/ -q --tb=no 2>&1 | tail -5 >> $GITHUB_STEP_SUMMARY
 
   # ── JOB 2: CODE QUALITY CHECK ───────────────────────────────
   lint:
@@ -88,7 +106,15 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install bcrypt fastapi uvicorn
+          pip install \
+            bcrypt \
+            fastapi \
+            uvicorn \
+            httpx \
+            pydantic \
+            pydantic[email] \
+            starlette \
+            anyio
 
       - name: Verify all modules import correctly
         env:
@@ -97,6 +123,9 @@ jobs:
           python -c "from src.user import User; print('✅ src.user OK')"
           python -c "from src.users import Patient, Doctor; print('✅ src.users OK')"
           python -c "from src.models import Appointment, TimeSlot; print('✅ src.models OK')"
+          python -c "from repositories.interfaces import PatientRepository; print('✅ repositories OK')"
+          python -c "from repositories.inmemory.implementations import InMemoryPatientRepository; print('✅ inmemory OK')"
+          python -c "from factories.repository_factory import RepositoryFactory; print('✅ factories OK')"
           python -c "from services.patient_service import PatientService; print('✅ PatientService OK')"
           python -c "from services.doctor_service import DoctorService; print('✅ DoctorService OK')"
           python -c "from services.appointment_service import AppointmentService; print('✅ AppointmentService OK')"
@@ -138,6 +167,7 @@ jobs:
                   "fastapi>=0.100.0",
                   "uvicorn>=0.23.0",
                   "bcrypt>=4.0.0",
+                  "pydantic>=2.0.0",
               ],
           )
           SETUP
