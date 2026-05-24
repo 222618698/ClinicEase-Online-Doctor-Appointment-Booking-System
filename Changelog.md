@@ -67,6 +67,7 @@ Python 3.12 was chosen because:
 ## [Assignment 3] – 2026-03-01
 ### Added
 - `README.md`, `SPECIFICATION.md`, `ARCHITECTURE.md`
+
 ## [Assignment 13] – 2026-05-23
  
 ### Added

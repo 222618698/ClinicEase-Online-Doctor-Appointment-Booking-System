@@ -265,6 +265,52 @@ python -m pytest tests/test_all.py -v
 | Prototype | `MedicationReminderPrototype` | Clones pre-configured medication templates |
 | Singleton | `DatabaseConnection` | One thread-safe DB connection across the app |
 
+### Assignment 13 — CI/CD with GitHub Actions
+| Document/Directory | Description |
+|---|---|
+| [.github/workflows/ci.yml](./.github/workflows/ci.yml) | Full CI/CD pipeline — runs 188 tests on every push, blocks PR if tests fail, builds wheel artifact on merge to main |
+| [PROTECTION.md](./PROTECTION.md) | Branch protection rules explanation — why each rule matters for code quality |
+
+---
+
+## ⚙️ CI/CD Pipeline
+
+ClinicEase uses GitHub Actions for automated testing and deployment.
+
+### How it Works
+
+```
+Every push / PR to main
+        ↓
+🧪 Job 1: Run All Tests (188 tests)
+        ↓
+🔍 Job 2: Code Quality Check
+        ↓
+  Tests pass? ──── NO ──→ ❌ PR blocked — cannot merge
+        │
+       YES
+        ↓
+📦 Job 3: Build & Release (main branch only)
+        ↓
+  Python wheel built → uploaded as GitHub Release artifact
+```
+
+### Pipeline Jobs
+
+| Job | Trigger | Purpose |
+|---|---|---|
+| 🧪 Run All Tests | Every push + PR | Runs all 188 tests, uploads results and coverage as artifacts |
+| 🔍 Code Quality Check | Every push + PR | Checks syntax errors, verifies all modules import correctly |
+| 📦 Build and Release | Merge to main only | Builds Python wheel, creates GitHub Release with artifact attached |
+
+### Branch Protection Rules on `main`
+- ✅ Pull request required before merging (no direct pushes)
+- ✅ At least 1 reviewer approval required
+- ✅ CI status checks must pass before merge
+- ✅ Branch must be up to date with main
+- ✅ Admins cannot bypass rules
+
+See [PROTECTION.md](./PROTECTION.md) for full justification.
 
 ## 📊 Kanban Board > See the live board on the [GitHub Projects tab](../../projects) ![ClinicEase Kanban Board](./screenshort/kanban-board-screenshot.png) ClinicEase uses a customised GitHub Project board based on the
 
