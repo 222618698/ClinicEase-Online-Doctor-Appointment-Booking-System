@@ -38,17 +38,17 @@ jobs:
       - name: Run Assignment 10 tests
         run: python -m pytest tests/test_all.py -v --tb=long
         env:
-          PYTHONPATH: .
+          PYTHONPATH: ${{ github.workspace }}
 
       - name: Run Assignment 11 tests
         run: python -m pytest tests/test_repositories.py -v --tb=long
         env:
-          PYTHONPATH: .
+          PYTHONPATH: ${{ github.workspace }}
 
       - name: Run Assignment 12 tests
         run: python -m pytest tests/test_services.py tests/test_api.py -v --tb=long
         env:
-          PYTHONPATH: .
+          PYTHONPATH: ${{ github.workspace }}
 
       - name: Run full suite with coverage
         run: |
@@ -62,7 +62,7 @@ jobs:
             --cov-report=term-missing \
             --tb=short
         env:
-          PYTHONPATH: .
+          PYTHONPATH: ${{ github.workspace }}
 
   # ── JOB 2: CODE QUALITY CHECK ───────────────────────────────
   lint:
@@ -97,7 +97,7 @@ jobs:
           python -c "from api.main import app; print('✅ FastAPI app OK')"
           echo "✅ All modules imported successfully"
         env:
-          PYTHONPATH: .
+          PYTHONPATH: ${{ github.workspace }}
 
   # ── JOB 3: BUILD AND RELEASE (main only) ────────────────────
   build-and-release:
