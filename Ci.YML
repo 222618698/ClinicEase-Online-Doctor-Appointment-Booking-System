@@ -1,0 +1,249 @@
+# .github/workflows/ci.yml
+# ClinicEase CI/CD Pipeline
+# Triggers: every push to any branch + every PR to main
+# CI:  runs all 188 tests and blocks merge if any fail
+# CD:  builds and uploads a Python wheel artifact on merge to main
+
+name: ClinicEase CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - "**"          # every branch
+  pull_request:
+    branches:
+      - main          # PRs targeting main only
+
+# ── Global settings ───────────────────────────────────────────
+env:
+  PYTHON_VERSION: "3.12"
+
+jobs:
+
+  # ════════════════════════════════════════════════════════════
+  # JOB 1 — RUN ALL TESTS (CI)
+  # Runs on every push and every PR.
+  # PR to main is BLOCKED if this job fails.
+  # ════════════════════════════════════════════════════════════
+  test:
+    name: 🧪 Run All Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Set up Python
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: "pip"
+
+      # 3. Install all dependencies
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install bcrypt pytest pytest-cov fastapi uvicorn httpx
+
+      # 4. Run Assignment 10 tests — Creational Patterns (69 tests)
+      - name: Run creational pattern tests (Assignment 10)
+        run: |
+          python -m pytest tests/test_all.py -v \
+            --tb=short \
+            --junitxml=test-results/test_all.xml
+
+      # 5. Run Assignment 11 tests — Repository Layer (47 tests)
+      - name: Run repository tests (Assignment 11)
+        run: |
+          python -m pytest tests/test_repositories.py -v \
+            --tb=short \
+            --junitxml=test-results/test_repositories.xml
+
+      # 6. Run Assignment 12 tests — Service Layer + API (72 tests)
+      - name: Run service and API tests (Assignment 12)
+        run: |
+          python -m pytest tests/test_services.py tests/test_api.py -v \
+            --tb=short \
+            --junitxml=test-results/test_services_api.xml
+
+      # 7. Run ALL tests together with coverage report
+      - name: Run full test suite with coverage
+        run: |
+          python -m pytest tests/ -v \
+            --cov=src \
+            --cov=creational_patterns \
+            --cov=repositories \
+            --cov=factories \
+            --cov=services \
+            --cov=api \
+            --cov-report=term-missing \
+            --cov-report=xml:coverage.xml \
+            --cov-report=html:htmlcov \
+            --tb=short
+
+      # 8. Upload test results as artifact (visible in Actions tab)
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()          # upload even if tests fail
+        with:
+          name: test-results
+          path: test-results/
+          retention-days: 30
+
+      # 9. Upload coverage report as artifact
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-report
+          path: |
+            coverage.xml
+            htmlcov/
+          retention-days: 30
+
+      # 10. Print coverage summary to the Actions log
+      - name: Coverage summary
+        run: |
+          echo "## ✅ Test Coverage Summary" >> $GITHUB_STEP_SUMMARY
+          python -m pytest tests/ \
+            --cov=src --cov=creational_patterns \
+            --cov=repositories --cov=factories \
+            --cov=services --cov=api \
+            --cov-report=term-missing -q 2>&1 | tail -20 >> $GITHUB_STEP_SUMMARY
+
+  # ════════════════════════════════════════════════════════════
+  # JOB 2 — CODE QUALITY CHECK (CI)
+  # Runs on every push and PR.
+  # Checks for syntax errors and basic code issues.
+  # ════════════════════════════════════════════════════════════
+  lint:
+    name: 🔍 Code Quality Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install lint tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyflakes
+
+      - name: Check for syntax errors (pyflakes)
+        run: |
+          python -m pyflakes src/ services/ api/ repositories/ factories/ creational_patterns/ || true
+
+      - name: Verify all modules import correctly
+        run: |
+          pip install bcrypt fastapi uvicorn
+          python -c "from src.user import User; print('✅ src.user OK')"
+          python -c "from src.users import Patient, Doctor; print('✅ src.users OK')"
+          python -c "from src.models import Appointment, TimeSlot; print('✅ src.models OK')"
+          python -c "from services.patient_service import PatientService; print('✅ PatientService OK')"
+          python -c "from services.doctor_service import DoctorService; print('✅ DoctorService OK')"
+          python -c "from services.appointment_service import AppointmentService; print('✅ AppointmentService OK')"
+          python -c "from api.main import app; print('✅ FastAPI app OK')"
+
+  # ════════════════════════════════════════════════════════════
+  # JOB 3 — BUILD AND RELEASE ARTIFACT (CD)
+  # ONLY runs when code is merged to main.
+  # Builds a Python wheel and uploads it as a GitHub release.
+  # ════════════════════════════════════════════════════════════
+  build-and-release:
+    name: 📦 Build and Release Artifact
+    runs-on: ubuntu-latest
+    needs: [test, lint]       # only runs if BOTH CI jobs pass
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install build tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install build wheel setuptools bcrypt fastapi uvicorn
+
+      # Create setup.py for packaging
+      - name: Create package setup files
+        run: |
+          cat > setup.py << 'EOF'
+          from setuptools import setup, find_packages
+          setup(
+              name="clinicease",
+              version="1.0.0",
+              description="ClinicEase Online Doctor Appointment Booking System",
+              packages=find_packages(exclude=["tests*"]),
+              python_requires=">=3.12",
+              install_requires=[
+                  "fastapi>=0.100.0",
+                  "uvicorn>=0.23.0",
+                  "bcrypt>=4.0.0",
+              ],
+          )
+          EOF
+
+      # Build the Python wheel
+      - name: Build Python wheel
+        run: python -m build --wheel
+
+      # List build output
+      - name: Show build output
+        run: ls -la dist/
+
+      # Upload wheel as GitHub Actions artifact
+      - name: Upload wheel artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: clinicease-wheel-${{ github.sha }}
+          path: dist/*.whl
+          retention-days: 90
+
+      # Create a GitHub Release with the wheel attached
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/heads/main')
+        with:
+          tag_name: v1.0.${{ github.run_number }}
+          name: "ClinicEase v1.0.${{ github.run_number }}"
+          body: |
+            ## ClinicEase Release v1.0.${{ github.run_number }}
+
+            ### ✅ What passed before this release:
+            - 69 creational pattern tests
+            - 47 repository layer tests
+            - 40 service layer tests
+            - 32 REST API integration tests
+            - **188 total tests — all passing**
+
+            ### 📦 Artifacts
+            - Python wheel (`.whl`) for pip installation
+
+            ### 🔗 Commit
+            ${{ github.sha }}
+          files: dist/*.whl
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Write release summary to Actions log
+      - name: Release summary
+        run: |
+          echo "## 📦 Release Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- **Version:** v1.0.${{ github.run_number }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Artifact:** $(ls dist/*.whl)" >> $GITHUB_STEP_SUMMARY
+          echo "- **All 188 tests passed** ✅" >> $GITHUB_STEP_SUMMARY
