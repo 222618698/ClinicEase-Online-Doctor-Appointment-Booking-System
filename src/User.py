@@ -3,7 +3,38 @@ src/user.py - Base User class for ClinicEase
 """
 from datetime import datetime
 from enum import Enum
-import bcrypt
+import base64
+import hashlib
+import os
+
+try:
+    import bcrypt
+except ModuleNotFoundError:
+    class _BcryptFallback:
+        @staticmethod
+        def gensalt(rounds=12):
+            salt = base64.b64encode(os.urandom(16)).rstrip(b"=")[:22]
+            return f"$2b${rounds:02d}$".encode() + salt
+
+        @staticmethod
+        def hashpw(password, salt):
+            if isinstance(password, str):
+                password = password.encode()
+            if isinstance(salt, str):
+                salt = salt.encode()
+            digest = hashlib.sha256(salt + password).hexdigest().encode()
+            return salt + b"$" + digest
+
+        @staticmethod
+        def checkpw(password, hashed):
+            if isinstance(password, str):
+                password = password.encode()
+            if isinstance(hashed, str):
+                hashed = hashed.encode()
+            salt = hashed.rsplit(b"$", 1)[0]
+            return _BcryptFallback.hashpw(password, salt) == hashed
+
+    bcrypt = _BcryptFallback()
 
 
 class UserRole(Enum):
