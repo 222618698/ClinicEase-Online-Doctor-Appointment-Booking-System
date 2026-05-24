@@ -33,51 +33,24 @@ jobs:
       - name: Install all dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install \
-            bcrypt \
-            pytest \
-            pytest-cov \
-            fastapi \
-            uvicorn \
-            httpx \
-            pydantic \
-            pydantic[email] \
-            starlette \
-            anyio
-
-      - name: Debug — show Python path and installed packages
-        env:
-          PYTHONPATH: ${{ github.workspace }}
-        run: |
-          echo "=== Workspace ===" 
-          ls -la
-          echo "=== Tests folder ==="
-          ls -la tests/
-          echo "=== src folder ==="
-          ls -la src/
-          echo "=== services folder ==="
-          ls -la services/
-          echo "=== Installed packages ==="
-          pip list
+          pip install bcrypt pytest pytest-cov fastapi uvicorn httpx pydantic starlette anyio
 
       - name: Run Assignment 10 tests
-        env:
-          PYTHONPATH: ${{ github.workspace }}
         run: python -m pytest tests/test_all.py -v --tb=long
+        env:
+          PYTHONPATH: .
 
       - name: Run Assignment 11 tests
-        env:
-          PYTHONPATH: ${{ github.workspace }}
         run: python -m pytest tests/test_repositories.py -v --tb=long
+        env:
+          PYTHONPATH: .
 
       - name: Run Assignment 12 tests
-        env:
-          PYTHONPATH: ${{ github.workspace }}
         run: python -m pytest tests/test_services.py tests/test_api.py -v --tb=long
+        env:
+          PYTHONPATH: .
 
       - name: Run full suite with coverage
-        env:
-          PYTHONPATH: ${{ github.workspace }}
         run: |
           python -m pytest tests/ \
             --cov=src \
@@ -88,6 +61,8 @@ jobs:
             --cov=api \
             --cov-report=term-missing \
             --tb=short
+        env:
+          PYTHONPATH: .
 
   # ── JOB 2: CODE QUALITY CHECK ───────────────────────────────
   lint:
@@ -106,19 +81,9 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install \
-            bcrypt \
-            fastapi \
-            uvicorn \
-            httpx \
-            pydantic \
-            pydantic[email] \
-            starlette \
-            anyio
+          pip install bcrypt fastapi uvicorn httpx pydantic starlette anyio
 
       - name: Verify all modules import correctly
-        env:
-          PYTHONPATH: ${{ github.workspace }}
         run: |
           python -c "from src.user import User; print('✅ src.user OK')"
           python -c "from src.users import Patient, Doctor; print('✅ src.users OK')"
@@ -131,6 +96,8 @@ jobs:
           python -c "from services.appointment_service import AppointmentService; print('✅ AppointmentService OK')"
           python -c "from api.main import app; print('✅ FastAPI app OK')"
           echo "✅ All modules imported successfully"
+        env:
+          PYTHONPATH: .
 
   # ── JOB 3: BUILD AND RELEASE (main only) ────────────────────
   build-and-release:
