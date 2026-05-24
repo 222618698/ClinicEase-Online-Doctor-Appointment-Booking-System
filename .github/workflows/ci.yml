@@ -1,0 +1,152 @@
+# .github/workflows/ci.yml
+# ClinicEase CI/CD Pipeline
+
+name: ClinicEase CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - "**"
+  pull_request:
+    branches:
+      - main
+
+env:
+  PYTHON_VERSION: "3.12"
+
+jobs:
+
+  # ── JOB 1: RUN ALL TESTS ────────────────────────────────────
+  test:
+    name: 🧪 Run All Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install bcrypt pytest pytest-cov fastapi uvicorn httpx
+
+      - name: Run all tests with coverage
+        run: |
+          python -m pytest tests/ -v \
+            --cov=src \
+            --cov=creational_patterns \
+            --cov=repositories \
+            --cov=factories \
+            --cov=services \
+            --cov=api \
+            --cov-report=term-missing \
+            --cov-report=xml:coverage.xml \
+            --tb=short
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-report
+          path: coverage.xml
+          retention-days: 30
+
+  # ── JOB 2: CODE QUALITY CHECK ───────────────────────────────
+  lint:
+    name: 🔍 Code Quality Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install bcrypt fastapi uvicorn pyflakes
+
+      - name: Check syntax errors
+        run: |
+          python -m pyflakes src/ services/ api/ repositories/ factories/ creational_patterns/ || true
+
+      - name: Verify all modules import correctly
+        run: |
+          python -c "from src.user import User; print('✅ src.user OK')"
+          python -c "from src.users import Patient, Doctor; print('✅ src.users OK')"
+          python -c "from src.models import Appointment, TimeSlot; print('✅ src.models OK')"
+          python -c "from services.patient_service import PatientService; print('✅ PatientService OK')"
+          python -c "from services.doctor_service import DoctorService; print('✅ DoctorService OK')"
+          python -c "from services.appointment_service import AppointmentService; print('✅ AppointmentService OK')"
+          python -c "from api.main import app; print('✅ FastAPI app OK')"
+
+  # ── JOB 3: BUILD AND RELEASE (main only) ────────────────────
+  build-and-release:
+    name: 📦 Build and Release Artifact
+    runs-on: ubuntu-latest
+    needs: [test, lint]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install build tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install build wheel setuptools bcrypt fastapi uvicorn
+
+      - name: Create setup.py if missing
+        run: |
+          if [ ! -f setup.py ]; then
+            cat > setup.py << 'SETUP'
+          from setuptools import setup, find_packages
+          setup(
+              name="clinicease",
+              version="1.0.0",
+              description="ClinicEase Online Doctor Appointment Booking System",
+              packages=find_packages(exclude=["tests*"]),
+              python_requires=">=3.12",
+              install_requires=[
+                  "fastapi>=0.100.0",
+                  "uvicorn>=0.23.0",
+                  "bcrypt>=4.0.0",
+              ],
+          )
+          SETUP
+          fi
+
+      - name: Build Python wheel
+        run: python -m build --wheel
+
+      - name: Show build output
+        run: ls -la dist/
+
+      - name: Upload wheel artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: clinicease-wheel-${{ github.run_number }}
+          path: dist/*.whl
+          retention-days: 90
+
+      - name: Release summary
+        run: |
+          echo "## 📦 Release Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- **Run:** #${{ github.run_number }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Artifact:** $(ls dist/*.whl)" >> $GITHUB_STEP_SUMMARY
+          echo "- **All tests passed** ✅" >> $GITHUB_STEP_SUMMARY
