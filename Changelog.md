@@ -67,3 +67,19 @@ Python 3.12 was chosen because:
 ## [Assignment 3] – 2026-03-01
 ### Added
 - `README.md`, `SPECIFICATION.md`, `ARCHITECTURE.md`
+## [Assignment 13] – 2026-05-23
+ 
+### Added
+- `.github/workflows/ci.yml` — Full CI/CD pipeline with 3 jobs:
+  - **Job 1:** Runs all 188 tests on every push and PR, uploads test results and coverage as artifacts
+  - **Job 2:** Code quality check — syntax errors and module import verification
+  - **Job 3:** Builds Python wheel and creates GitHub Release (main branch merges only)
+- `PROTECTION.md` — Branch protection rules documentation and justification
+- `setup.py` — Package configuration for Python wheel build
+### CI/CD Features
+- Auto-triggers on every push to any branch
+- Auto-triggers on every PR targeting main
+- Blocks PR merge if any of the 188 tests fail
+- Generates versioned GitHub Release artifact (`.whl`) on every merge to main
+- Uploads test results (JUnit XML) and HTML coverage report as downloadable artifacts
+- Writes test summary directly to GitHub Actions step summary
