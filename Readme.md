@@ -312,6 +312,62 @@ Every push / PR to main
 
 See [PROTECTION.md](./PROTECTION.md) for full justification.
 
+---
+
+## 🚀 Getting Started
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/222618698/ClinicEase-Online-Doctor-Appointment-Booking-System.git
+cd ClinicEase-Online-Doctor-Appointment-Booking-System
+
+# 2. Install dependencies
+pip install bcrypt pytest pytest-cov fastapi uvicorn httpx pydantic
+
+# 3. Run all tests (should show 188 passing)
+python -m pytest tests/ -v
+
+# 4. Start the API server
+uvicorn api.main:app --reload
+# Open http://localhost:8000/docs for Swagger UI
+```
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions! Please read [CONTRIBUTING.md](./CONTRIBUTING.md) before submitting a PR.
+
+### Features Available for Contribution
+
+| Feature | Difficulty | Label | File to Edit |
+|---|---|---|---|
+| Add medication search endpoint | Beginner | `good-first-issue` | `api/main.py` |
+| Add test for caregiver linking | Beginner | `good-first-issue` | `tests/test_services.py` |
+| Add doctor rating system | Beginner | `good-first-issue` | `services/doctor_service.py` |
+| Add appointment history endpoint | Beginner | `good-first-issue` | `api/main.py` |
+| Add patient profile photo upload | Beginner | `good-first-issue` | `services/patient_service.py` |
+| PostgreSQL database integration | Intermediate | `feature-request` | `repositories/database/` |
+| JWT authentication | Intermediate | `feature-request` | `api/main.py` |
+| React.js frontend | Advanced | `feature-request` | New directory |
+
+See [ROADMAP.md](./ROADMAP.md) for the full list of planned features.
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License** — see [LICENSE](./LICENSE) for details.
+
+### Assignment 14 — Open Source Collaboration
+| Document | Description |
+|---|---|
+| [CONTRIBUTING.md](./CONTRIBUTING.md) | Setup instructions, coding standards, and PR guide for contributors |
+| [ROADMAP.md](./ROADMAP.md) | Planned features across 5 development phases |
+| [LICENSE](./LICENSE) | MIT License |
+| [VOTING_RESULTS.md](./VOTING_RESULTS.md) | Peer engagement — stars, forks, and feedback |
+| [REFLECTION_A14.md](./REFLECTION_A14.md) | 720-word reflection on open-source collaboration |
+
 ## 📊 Kanban Board > See the live board on the [GitHub Projects tab](../../projects) ![ClinicEase Kanban Board](./screenshort/kanban-board-screenshot.png) ClinicEase uses a customised GitHub Project board based on the
 
 ## 🛠️ Tech Stack (Planned)
@@ -332,3 +388,4 @@ Student Number: [222618698]
 Cape Peninsula University of Technology
 Module: Software Engineering – Assignment 3
 Date: March 2026
+
