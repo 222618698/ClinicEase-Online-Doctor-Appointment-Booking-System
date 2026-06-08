@@ -368,6 +368,14 @@ This project is licensed under the **MIT License** — see [LICENSE](./LICENSE) 
 | [VOTING_RESULTS.md](./VOTING_RESULTS.md) | Peer engagement — stars, forks, and feedback |
 | [REFLECTION_A14.md](./REFLECTION_A14.md) | 720-word reflection on open-source collaboration |
 
+### Assignment 15 — Cross-Project Contributions
+| Document | Description |
+|---|---|
+| [CONTRIBUTIONS.md](./CONTRIBUTIONS.md) | Main contributions file — how to contribute + PR template |
+| [CONTRIBUTION_PLAN.md](./CONTRIBUTION_PLAN.md) | Projects selected, issues chosen, and contribution strategy |
+| [MERGED_PRS.md](./MERGED_PRS.md) | All PRs submitted to peers with CI screenshots |
+| [REFLECTION_A15.md](./REFLECTION_A15.md) | 730-word reflection on cross-project collaboration |
+
 ## 📊 Kanban Board > See the live board on the [GitHub Projects tab](../../projects) ![ClinicEase Kanban Board](./screenshort/kanban-board-screenshot.png) ClinicEase uses a customised GitHub Project board based on the
 
 ## 🛠️ Tech Stack (Planned)
